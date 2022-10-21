@@ -1,9 +1,9 @@
 import React, { useCallback, useRef, useState } from "react";
-import Hammer from "hammerjs";
+import classes from "./style.module.css";
 import "./App.css";
 
-const numRows = 40;
-const numCols = 40;
+const numRows = 30;
+const numCols = 30;
 const speed = 300;
 
 const operations = [
@@ -118,7 +118,6 @@ const App = () => {
 
   return (
     <>
-      {/* <Hammer> */}
       <button
         onClick={() => {
           setRunning(!running);
@@ -126,13 +125,11 @@ const App = () => {
             runningRef.current = true;
             runSimulation();
           }
-          Hammer.on("tap");
         }}
       >
         {" "}
         {running ? "Stop" : "Start"}
       </button>
-      {/* </Hammer> */}
 
       <button
         onClick={() => {
@@ -164,6 +161,7 @@ const App = () => {
           display: "grid",
           gridTemplateColumns: `repeat(${numCols}, 20px)`,
         }}
+        className={classes.grid}
       >
         {grid.map((rows, i) =>
           rows.map((col, j) => (
