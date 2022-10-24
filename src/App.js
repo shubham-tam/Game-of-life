@@ -1,10 +1,10 @@
 import React, { useCallback, useRef, useState } from "react";
 import classes from "./style.module.css";
+import Whatis from "./components/Whatis";
+
 import "./App.css";
 
-const numRows = 30;
-const numCols = 30;
-const speed = 300;
+let size;
 
 const operations = [
   [0, 1],
@@ -17,29 +17,67 @@ const operations = [
   [-1, 1],
 ];
 
-const generateEmptyGrid = () => {
+// const generateEmptyGrid = () => {
+//   const rows = [];
+//   for (let i = 0; i < num; i++) {
+//     rows.push(Array.from(Array(numCols), () => 0));
+//   }
+//   return rows;
+// };
+
+const generateEmptyGrid = (num) => {
+  size = num;
   const rows = [];
-  for (let i = 0; i < numRows; i++) {
-    rows.push(Array.from(Array(numCols), () => 0));
+  for (let i = 0; i < num; i++) {
+    rows.push(Array.from(Array(num), () => 0));
   }
   return rows;
 };
 
 const countNeighbors = (grid, x, y) => {
   return operations.reduce((acc, [i, j]) => {
-    const row = (x + i + numRows) % numRows;
-    const col = (y + j + numCols) % numCols;
+    const row = (x + i + size) % size;
+    const col = (y + j + size) % size;
     acc += grid[row][col];
     return acc;
   }, 0);
 };
 
-const App = () => {
+const App = (props) => {
+  // const [grid, setGrid] = useState(() => {
+  //   return generateEmptyGrid();
+  // });
+
   const [grid, setGrid] = useState(() => {
-    return generateEmptyGrid();
+    return generateEmptyGrid(26);
   });
+
+  // const gridToggler = (size) => {
+  //   // grid ? setGrid(generateEmptyGrid(size)) : generateEmptyGrid(26);
+  //   grid ? setGrid(generateEmptyGrid(size)) : setGridChangedOptions(true);
+  // };
+
   const [running, setRunning] = useState(false);
   const [generation, setGeneration] = useState(0);
+  const [gameInfo, setGameInfo] = useState(false);
+  const [gridChanged, setGridChangedOptions] = useState(false);
+
+  const toggler = () => {
+    gridChanged ? setGridChangedOptions(false) : setGridChangedOptions(true);
+  };
+
+  const whatIfToggler = () => {
+    gameInfo ? setGameInfo(false) : setGameInfo(true);
+  };
+
+  const clearWhatif = () => {
+    setGameInfo(false);
+  };
+
+  // const gridToggler = (size) => {
+  //   // grid ? setGrid(generateEmptyGrid(size)) : generateEmptyGrid(26);
+  //   grid ? setGrid(generateEmptyGrid(size)) : setGridChangedOptions(false);
+  // };
 
   const runningRef = useRef();
   runningRef.current = running;
@@ -66,14 +104,14 @@ const App = () => {
   //   }
   //   setGrid((g) => {
   //     return produce(g, (gridCopy) => {
-  //       for (let i = 0; i < numRows; i++) {
-  //         for (let j = 0; j < numCols; j++) {
+  //       for (let i = 0; i < size; i++) {
+  //         for (let j = 0; j < size; j++) {
   //           let neighbours = 0;
   //           operations.forEach(([x, y]) => {
   //             const newI = i + x;
   //             const newJ = j + y;
 
-  //             if (newI >= 0 && newI < numRows && newJ >= 0 && newJ < numCols) {
+  //             if (newI >= 0 && newI < size && newJ >= 0 && newJ < size) {
   //               neighbours += g[newI][newJ];
   //             }
   //           });
@@ -96,11 +134,10 @@ const App = () => {
       if (!runningRef.current) {
         return;
       }
-
       setGrid((currentGrid) =>
         produce(currentGrid, (gridCopy) => {
-          for (let i = 0; i < numRows; i++) {
-            for (let j = 0; j < numCols; j++) {
+          for (let i = 0; i < size; i++) {
+            for (let j = 0; j < size; j++) {
               const count = countNeighbors(currentGrid, i, j);
               if (currentGrid[i][j] === 1 && (count < 2 || count > 3)) {
                 gridCopy[i][j] = 0;
@@ -113,53 +150,57 @@ const App = () => {
         })
       );
       setGeneration(++generationRef.current);
-    }, speed);
+    }, 500);
   }, []);
 
   return (
     <>
-      <button
-        onClick={() => {
-          setRunning(!running);
-          if (!running) {
-            runningRef.current = true;
-            runSimulation();
-          }
-        }}
-      >
-        {" "}
-        {running ? "Stop" : "Start"}
-      </button>
+      {gameInfo && (
+        <div>
+          <Whatis onPress={clearWhatif} onClick={whatIfToggler} />
+        </div>
+      )}
 
-      <button
-        onClick={() => {
-          setGrid(generateEmptyGrid);
-          setGeneration(0);
-        }}
-      >
-        {" "}
-        Clear
-      </button>
+      {gridChanged && (
+        <div className={classes.grid_Change}>
+          <h3> Select the grid size </h3>
+          <div className={classes.grid_Button}>
+            <button
+              onClick={() => {
+                setGrid(generateEmptyGrid(10));
+                toggler();
+              }}
+            >
+              {" "}
+              10 X 10{" "}
+            </button>
+            <button
+              onClick={() => {
+                setGrid(generateEmptyGrid(20));
+                toggler();
+              }}
+            >
+              {" "}
+              20 X 20{" "}
+            </button>
+            <button
+              onClick={() => {
+                setGrid(generateEmptyGrid(30));
+                toggler();
+              }}
+            >
+              {" "}
+              30 X 30{" "}
+            </button>
+          </div>
+        </div>
+      )}
 
-      <button
-        onClick={() => {
-          const rows = [];
-          for (let i = 0; i < numRows; i++) {
-            rows.push(
-              Array.from(Array(numCols), () => (Math.random() > 0.8 ? 1 : 0))
-            );
-          }
-          setGrid(rows);
-        }}
-      >
-        {" "}
-        Random{" "}
-      </button>
-      <div> Generaion : {generation}</div>
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${numCols}, 20px)`,
+          // gridTemplateColumns: `repeat(${numCols}, 25px)`,
+          gridTemplateColumns: `repeat(${size}, 25px)`,
         }}
         className={classes.grid}
       >
@@ -175,15 +216,71 @@ const App = () => {
                 // console.log(newgrid);
               }}
               style={{
-                width: 20,
-                height: 20,
+                width: 25,
+                height: 25,
                 // backgroundColor: grid[i][j] ? "#003366" : "#eee",
-                backgroundColor: grid[i][j] ? "pink" : "#eee",
-                border: "1px solid black",
+                backgroundColor: grid[i][j] ? "#457b9d" : "#e7ecef",
+
+                border: "1px solid #b5c9d6",
               }}
             />
           ))
         )}
+      </div>
+      <div className={classes.scoreContainer}>
+        {" "}
+        Generaion :<div className={classes.score}>{generation}</div>
+        <br />
+        Current size of the grid : {size} x {size}
+      </div>
+
+      <div className={classes.button}>
+        <button
+          // className={buttonStyle["button-8"]}
+          onClick={() => setGameInfo(true)}
+        >
+          What is?
+        </button>
+
+        <button onClick={toggler}> Change grid size </button>
+
+        <button
+          onClick={() => {
+            setRunning(!running);
+            if (!running) {
+              runningRef.current = true;
+              runSimulation();
+            }
+          }}
+        >
+          {" "}
+          {running ? "Stop" : "Start"}
+        </button>
+
+        <button
+          onClick={() => {
+            setGrid(generateEmptyGrid(size));
+            setGeneration(0);
+          }}
+        >
+          {" "}
+          Clear
+        </button>
+
+        <button
+          onClick={() => {
+            const rows = [];
+            for (let i = 0; i < size; i++) {
+              rows.push(
+                Array.from(Array(size), () => (Math.random() > 0.8 ? 1 : 0))
+              );
+            }
+            setGrid(rows);
+          }}
+        >
+          {" "}
+          Random{" "}
+        </button>
       </div>
     </>
   );
