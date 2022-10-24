@@ -34,14 +34,14 @@ const generateEmptyGrid = (num) => {
   return rows;
 };
 
-const countNeighbors = (grid, x, y) => {
-  return operations.reduce((acc, [i, j]) => {
-    const row = (x + i + size) % size;
-    const col = (y + j + size) % size;
-    acc += grid[row][col];
-    return acc;
-  }, 0);
-};
+// const countNeighbors = (grid, x, y) => {
+//   return operations.reduce((acc, [i, j]) => {
+//     const row = (x + i + size) % size;
+//     const col = (y + j + size) % size;
+//     acc += grid[row][col];
+//     return acc;
+//   }, 0);
+// };
 
 const App = (props) => {
   // const [grid, setGrid] = useState(() => {
@@ -51,11 +51,6 @@ const App = (props) => {
   const [grid, setGrid] = useState(() => {
     return generateEmptyGrid(26);
   });
-
-  // const gridToggler = (size) => {
-  //   // grid ? setGrid(generateEmptyGrid(size)) : generateEmptyGrid(26);
-  //   grid ? setGrid(generateEmptyGrid(size)) : setGridChangedOptions(true);
-  // };
 
   const [running, setRunning] = useState(false);
   const [generation, setGeneration] = useState(0);
@@ -73,11 +68,6 @@ const App = (props) => {
   const clearWhatif = () => {
     setGameInfo(false);
   };
-
-  // const gridToggler = (size) => {
-  //   // grid ? setGrid(generateEmptyGrid(size)) : generateEmptyGrid(26);
-  //   grid ? setGrid(generateEmptyGrid(size)) : setGridChangedOptions(false);
-  // };
 
   const runningRef = useRef();
   runningRef.current = running;
@@ -98,60 +88,60 @@ const App = (props) => {
     return newgrid;
   };
 
-  // const runSimulation = useCallback(() => {
-  //   if (!runningRef.current) {
-  //     return;
-  //   }
-  //   setGrid((g) => {
-  //     return produce(g, (gridCopy) => {
-  //       for (let i = 0; i < size; i++) {
-  //         for (let j = 0; j < size; j++) {
-  //           let neighbours = 0;
-  //           operations.forEach(([x, y]) => {
-  //             const newI = i + x;
-  //             const newJ = j + y;
-
-  //             if (newI >= 0 && newI < size && newJ >= 0 && newJ < size) {
-  //               neighbours += g[newI][newJ];
-  //             }
-  //           });
-
-  //           if (neighbours < 2 || neighbours > 3) {
-  //             gridCopy[i][j] = 0;
-  //           } else if (g[i][j] === 0 && neighbours === 3) {
-  //             gridCopy[i][j] = 1;
-  //           }
-  //         }
-  //       }
-  //     });
-  //   });
-
-  //   setTimeout(runSimulation, 100);
-  // }, []);
-
   const runSimulation = useCallback(() => {
-    setInterval(() => {
-      if (!runningRef.current) {
-        return;
-      }
-      setGrid((currentGrid) =>
-        produce(currentGrid, (gridCopy) => {
-          for (let i = 0; i < size; i++) {
-            for (let j = 0; j < size; j++) {
-              const count = countNeighbors(currentGrid, i, j);
-              if (currentGrid[i][j] === 1 && (count < 2 || count > 3)) {
-                gridCopy[i][j] = 0;
+    if (!runningRef.current) {
+      return;
+    }
+    setGrid((g) => {
+      return produce(g, (gridCopy) => {
+        for (let i = 0; i < size; i++) {
+          for (let j = 0; j < size; j++) {
+            let neighbours = 0;
+            operations.forEach(([x, y]) => {
+              const newI = i + x;
+              const newJ = j + y;
+
+              if (newI >= 0 && newI < size && newJ >= 0 && newJ < size) {
+                neighbours += g[newI][newJ];
               }
-              if (!currentGrid[i][j] && count === 3) {
-                gridCopy[i][j] = 1;
-              }
+            });
+
+            if (neighbours < 2 || neighbours > 3) {
+              gridCopy[i][j] = 0;
+            } else if (g[i][j] === 0 && neighbours === 3) {
+              gridCopy[i][j] = 1;
             }
           }
-        })
-      );
-      setGeneration(++generationRef.current);
-    }, 500);
+        }
+      });
+    });
+
+    setTimeout(runSimulation, 500);
   }, []);
+
+  // const runSimulation = useCallback(() => {
+  //   setInterval(() => {
+  //     if (!runningRef.current) {
+  //       return;
+  //     }
+  //     setGrid((currentGrid) =>
+  //       produce(currentGrid, (gridCopy) => {
+  //         for (let i = 0; i < size; i++) {
+  //           for (let j = 0; j < size; j++) {
+  //             const count = countNeighbors(currentGrid, i, j);
+  //             if (currentGrid[i][j] === 1 && (count < 2 || count > 3)) {
+  //               gridCopy[i][j] = 0;
+  //             }
+  //             if (!currentGrid[i][j] && count === 3) {
+  //               gridCopy[i][j] = 1;
+  //             }
+  //           }
+  //         }
+  //       })
+  //     );
+  //     setGeneration(++generationRef.current);
+  //   }, 500);
+  // }, []);
 
   return (
     <>
