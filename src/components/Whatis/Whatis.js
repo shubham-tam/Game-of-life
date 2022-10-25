@@ -1,33 +1,28 @@
 import React from "react";
-import classes from "../style/style.module.css";
-// import "../App.css";
+import classes from "./style.module.css";
 
-export default function Whatis(props) {
+export default function Whatis() {
   return (
     <>
-      <div className={classes.textBody}>
-        <button onClick={props.onPress} className={classes.btnHover}>
-          {" "}
-          x{" "}
-        </button>
-        <h2>What is game of life?</h2>
-        <h3> Game of Life Explanation</h3>
+      <div className={classes}>
+        <h3> Game of Life Explanation!</h3>
         <h4>
           {" "}
-          The Game of Life, also known simply as Life, is a cellular automaton
+          The Game of Life, also known simply as Life, is a cellular automaton{" "}
+          <br />
           devised by the British mathematician John Horton Conway in 1970.{" "}
         </h4>
-        <h4> Rules of the game: </h4>
-        <h5> 1. Any live cell with two or three live neighbours survives.</h5>
-        <h5>
+        <h3 className={classes.h3Text}> Rules of the game: </h3>
+        <h4> 1. Any live cell with two or three live neighbours survives.</h4>
+        <h4>
           {" "}
           2. Any dead cell with three live neighbours becomes a live cell.
-        </h5>
-        <h5>
+        </h4>
+        <h4>
           {" "}
           3. All other live cells die in the next generation. Similarly, all
           other dead cells stay dead.
-        </h5>
+        </h4>
 
         <a
           href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"

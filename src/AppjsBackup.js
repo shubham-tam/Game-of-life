@@ -18,6 +18,14 @@ const operations = [
   [-1, 1],
 ];
 
+// const generateEmptyGrid = () => {
+//   const rows = [];
+//   for (let i = 0; i < num; i++) {
+//     rows.push(Array.from(Array(numCols), () => 0));
+//   }
+//   return rows;
+// };
+
 const generateEmptyGrid = (num) => {
   size = num;
   const rows = [];
@@ -27,13 +35,27 @@ const generateEmptyGrid = (num) => {
   return rows;
 };
 
+// const countNeighbors = (grid, x, y) => {
+//   return operations.reduce((acc, [i, j]) => {
+//     const row = (x + i + size) % size;
+//     const col = (y + j + size) % size;
+//     acc += grid[row][col];
+//     return acc;
+//   }, 0);
+// };
+
 const App = (props) => {
+  // const [grid, setGrid] = useState(() => {
+  //   return generateEmptyGrid();
+  // });
+
   const [grid, setGrid] = useState(() => {
     return generateEmptyGrid(26);
   });
 
   const [running, setRunning] = useState(false);
   const [generation, setGeneration] = useState(0);
+  const [gameInfo, setGameInfo] = useState(false);
 
   const [gridChanged, setGridChangedOptions] = useState(false);
   const [visibility, setVisibility] = useState(false);
@@ -46,14 +68,29 @@ const App = (props) => {
     gridChanged ? setGridChangedOptions(false) : setGridChangedOptions(true);
   };
 
+  // const whatIfToggler = () => {
+  //   gameInfo ? setGameInfo(false) : setGameInfo(true);
+  // };
+
+  // const clearWhatif = () => {
+  //   setGameInfo(false);
+  // };
+
   const runningRef = useRef();
   runningRef.current = running;
 
   const generationRef = useRef(generation);
   generationRef.current = generation;
 
+  // console.log(grid);
+
   const produce = (grid, callback) => {
+    // const newgrid = JSON.parse(grid);
+    // const newgrid = JSON.stringify(grid);
+
     const newgrid = JSON.parse(JSON.stringify(grid));
+    // console.log(typeof newgrid);
+
     callback(newgrid);
     return newgrid;
   };
@@ -88,6 +125,30 @@ const App = (props) => {
     setGeneration(++generationRef.current);
     setTimeout(runSimulation, 500);
   }, []);
+
+  // const runSimulation = useCallback(() => {
+  //   setInterval(() => {
+  //     if (!runningRef.current) {
+  //       return;
+  //     }
+  //     setGrid((currentGrid) =>
+  //       produce(currentGrid, (gridCopy) => {
+  //         for (let i = 0; i < size; i++) {
+  //           for (let j = 0; j < size; j++) {
+  //             const count = countNeighbors(currentGrid, i, j);
+  //             if (currentGrid[i][j] === 1 && (count < 2 || count > 3)) {
+  //               gridCopy[i][j] = 0;
+  //             }
+  //             if (!currentGrid[i][j] && count === 3) {
+  //               gridCopy[i][j] = 1;
+  //             }
+  //           }
+  //         }
+  //       })
+  //     );
+  //     setGeneration(++generationRef.current);
+  //   }, 500);
+  // }, []);
 
   return (
     <>
@@ -129,6 +190,7 @@ const App = (props) => {
       <div
         style={{
           display: "grid",
+          // gridTemplateColumns: `repeat(${numCols}, 25px)`,
           gridTemplateColumns: `repeat(${size}, 25px)`,
         }}
         className={classes.grid}
@@ -142,11 +204,14 @@ const App = (props) => {
                   newgrid[i][j] = 1 - newgrid[i][j];
                 });
                 setGrid(newgrid);
+                // console.log(newgrid);
               }}
               style={{
                 width: 25,
                 height: 25,
+                // backgroundColor: grid[i][j] ? "#003366" : "#eee",
                 backgroundColor: grid[i][j] ? "#457b9d" : "#e7ecef",
+
                 border: "1px solid #b5c9d6",
               }}
             />
