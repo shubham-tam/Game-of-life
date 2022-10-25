@@ -26,9 +26,9 @@ const CustomPopup = (props) => {
       <div className={popupStyles.popup}>
         <h2 className={popupStyles.h2Text}>{props.title}</h2>
         <span className={popupStyles.close} onClick={closeHandler}>
-          {/* &times; */}x
+          x
         </span>
-        <div className={popupStyles.content}>{props.children}</div>
+        <div>{props.children}</div>
       </div>
     </div>
   );

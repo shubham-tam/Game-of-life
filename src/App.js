@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState, useEffect } from "react";
 import classes from "./style.module.css";
 import Whatis from "./components/Whatis/Whatis";
 import CustomPopup from "./components/CustomPopup/customPopup";
@@ -27,16 +27,26 @@ const generateEmptyGrid = (num) => {
   return rows;
 };
 
-const App = (props) => {
+const App = () => {
   const [grid, setGrid] = useState(() => {
     return generateEmptyGrid(26);
   });
 
   const [running, setRunning] = useState(false);
   const [generation, setGeneration] = useState(0);
-
   const [gridChanged, setGridChangedOptions] = useState(false);
   const [visibility, setVisibility] = useState(false);
+
+  const [show, setShow] = useState(false);
+
+  // const closeHandler = () => {
+  //   setShow(false);
+  //   popupCloseHandler(false);
+  // };
+
+  useEffect(() => {
+    setShow(show);
+  }, [show]);
 
   const popupCloseHandler = () => {
     setVisibility(false);
@@ -92,36 +102,47 @@ const App = (props) => {
   return (
     <>
       {gridChanged && (
-        <div className={classes.grid_Change}>
-          <h3> Select the grid size </h3>
-          <div className={classes.grid_Button}>
-            <button
-              onClick={() => {
-                setGrid(generateEmptyGrid(10));
-                toggler();
-              }}
-            >
-              {" "}
-              10 X 10{" "}
-            </button>
-            <button
-              onClick={() => {
-                setGrid(generateEmptyGrid(20));
-                toggler();
-              }}
-            >
-              {" "}
-              20 X 20{" "}
-            </button>
-            <button
-              onClick={() => {
-                setGrid(generateEmptyGrid(30));
-                toggler();
-              }}
-            >
-              {" "}
-              30 X 30{" "}
-            </button>
+        <div className={classes.overlay}>
+          <div className={classes.popup}>
+            <h3> Select the grid size </h3>
+            <div className={classes.content}>
+              <button
+                onClick={() => {
+                  setGrid(generateEmptyGrid(10));
+                  toggler();
+                }}
+              >
+                {" "}
+                10 X 10{" "}
+              </button>
+              <button
+                onClick={() => {
+                  setGrid(generateEmptyGrid(26));
+                  toggler();
+                }}
+              >
+                {" "}
+                Default{" "}
+              </button>
+              <button
+                onClick={() => {
+                  setGrid(generateEmptyGrid(20));
+                  toggler();
+                }}
+              >
+                {" "}
+                20 X 20{" "}
+              </button>
+              <button
+                onClick={() => {
+                  setGrid(generateEmptyGrid(30));
+                  toggler();
+                }}
+              >
+                {" "}
+                30 X 30{" "}
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -155,7 +176,7 @@ const App = (props) => {
       </div>
       <div className={classes.scoreContainer}>
         {" "}
-        Generaion :<div className={classes.score}>{generation}</div>
+        Generaion: <div className={classes.score}>{generation}</div>
         <br />
         Current size of the grid : {size} x {size}
       </div>
