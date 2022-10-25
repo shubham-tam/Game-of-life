@@ -61,13 +61,9 @@ a {
 
 .popup {
   margin: 70px auto;
-  padding: 20px;
-  /* line-height: 160%; */
-  background-color: #b5c9d9;
   border-radius: 5px;
   width: 34%;
   position: relative;
-  /* transition: all 3s ease-in-out; */
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-gap: 12px;

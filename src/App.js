@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState, useEffect } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import classes from "./style.module.css";
 import Whatis from "./components/Whatis/Whatis";
 import CustomPopup from "./components/CustomPopup/customPopup";
@@ -36,17 +36,6 @@ const App = () => {
   const [generation, setGeneration] = useState(0);
   const [gridChanged, setGridChangedOptions] = useState(false);
   const [visibility, setVisibility] = useState(false);
-
-  const [show, setShow] = useState(false);
-
-  // const closeHandler = () => {
-  //   setShow(false);
-  //   popupCloseHandler(false);
-  // };
-
-  useEffect(() => {
-    setShow(show);
-  }, [show]);
 
   const popupCloseHandler = () => {
     setVisibility(false);
@@ -105,7 +94,7 @@ const App = () => {
         <div className={classes.overlay}>
           <div className={classes.popup}>
             <h3> Select the grid size </h3>
-            <div className={classes.content}>
+            <div>
               <button
                 onClick={() => {
                   setGrid(generateEmptyGrid(10));
