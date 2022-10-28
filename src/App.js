@@ -92,14 +92,15 @@ const App = () => {
     <>
       {gridChanged && (
         <div className={classes.overlay}>
-          <div className={classes.popup}>
+          <div>
             <h3> Select the grid size </h3>
-            <div>
+            <div className={classes.popup}>
               <button
                 onClick={() => {
                   setGrid(generateEmptyGrid(10));
                   toggler();
                 }}
+                className={classes.gridButtons}
               >
                 {" "}
                 10 X 10{" "}
@@ -109,6 +110,7 @@ const App = () => {
                   setGrid(generateEmptyGrid(26));
                   toggler();
                 }}
+                className={classes.gridButtons}
               >
                 {" "}
                 Default{" "}
@@ -118,6 +120,7 @@ const App = () => {
                   setGrid(generateEmptyGrid(20));
                   toggler();
                 }}
+                className={classes.gridButtons}
               >
                 {" "}
                 20 X 20{" "}
@@ -127,6 +130,7 @@ const App = () => {
                   setGrid(generateEmptyGrid(30));
                   toggler();
                 }}
+                className={classes.gridButtons}
               >
                 {" "}
                 30 X 30{" "}

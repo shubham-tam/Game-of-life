@@ -59,12 +59,16 @@ a {
   /* transition: opacity 500ms; */
 }
 
+/* .gridButtons {
+  padding: 20px 40px;
+} */
+
 .popup {
   margin: 70px auto;
   border-radius: 5px;
-  width: 34%;
+  /* width: 34%; */
   position: relative;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-gap: 12px;
+  grid-gap: 10px;
 }
