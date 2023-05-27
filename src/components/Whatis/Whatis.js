@@ -1,4 +1,5 @@
 import React from "react";
+
 import classes from "./style.module.css";
 
 export default function Whatis() {
@@ -7,19 +8,16 @@ export default function Whatis() {
       <div className={classes}>
         <h3> Game of Life Explanation!</h3>
         <h4>
-          {" "}
-          The Game of Life, also known simply as Life, is a cellular automaton{" "}
+          The Game of Life, also known simply as Life, is a cellular automaton
           <br />
-          devised by the British mathematician John Horton Conway in 1970.{" "}
+          devised by the British mathematician John Horton Conway in 1970.
         </h4>
         <h3 className={classes.h3Text}> Rules of the game: </h3>
         <h4> 1. Any live cell with two or three live neighbours survives.</h4>
         <h4>
-          {" "}
           2. Any dead cell with three live neighbours becomes a live cell.
         </h4>
         <h4>
-          {" "}
           3. All other live cells die in the next generation. Similarly, all
           other dead cells stay dead.
         </h4>
@@ -29,7 +27,6 @@ export default function Whatis() {
           target="_blank"
           rel="noreferrer"
         >
-          {" "}
           Visit the Wiki
         </a>
       </div>

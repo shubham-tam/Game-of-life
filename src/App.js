@@ -205,7 +205,6 @@ const App = () => {
             setGeneration(0);
           }}
         >
-          {" "}
           Clear
         </button>
 
@@ -220,8 +219,7 @@ const App = () => {
             setGrid(rows);
           }}
         >
-          {" "}
-          Random{" "}
+          Random
         </button>
       </div>
     </>
